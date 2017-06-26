@@ -5,7 +5,7 @@
   - name: Update repositories cache and install "python3" package
     become: true
     apt:
-      name: python3
+#      name: python3
       update_cache: yes
   - name: Getting kube scripts
     get_url:
@@ -37,7 +37,7 @@
   - name: Installing kubernetes binaries
     become: true
     unarchive:
-      copy: no
+#      copy: no
       src: /home/vagrant/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
       dest: /logiciels
       remote_src: true
