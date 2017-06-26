@@ -1,0 +1,64 @@
+---
+- hosts: node
+  become_method: sudo
+  tasks:
+  - name: Update repositories cache and install "rkt" package
+    become: true
+    apt:
+#      name: python3
+      update_cache: yes
+  - name: Getting kube scripts
+    get_url:
+      url: https://get.k8s.io/
+      dest: /home/vagrant/get-kube.sh
+      mode: 0755
+  - name: Getting kubernetes binaries
+    shell: /home/vagrant/get-kube.sh
+    environment:
+      KUBERNETES_SKIP_CONFIRM: 1
+      KUBERNETES_SKIP_CREATE_CLUSTER: 1
+      KUBERNETES_SERVER_ARCH: amd64
+  - name: Settings folder rights
+    file:
+      path: /home/vagrant/kubernetes
+      state: directory
+      recurse: true
+      mode: 0755
+  - name: Settings binary archive rights
+    file:
+      path: /home/vagrant/kubernetes/client/kubernetes-client-linux-amd64.tar.gz
+      mode: 0644
+  - name: Creating logiciels folder
+    become: true
+    file:
+      path: /logiciels
+      state: directory
+      mode: 0755   
+  - name: Installing kubernetes binaries
+    become: true
+    unarchive:
+#      copy: no
+      src: /home/vagrant/kubernetes/client/kubernetes-client-linux-amd64.tar.gz
+      dest: /logiciels
+      remote_src: true
+  - name: Settings logiciels folder
+    become: true
+    file:
+      path: /logiciels
+      recurse: true
+      state: directory
+      mode: 0755
+  - name: add /kubernetes/client/bin to path
+    become: true
+    lineinfile:
+      dest: /etc/environment
+      state: present
+      backrefs: yes
+      regexp: 'PATH=(["]*)((?!.*?/logiciels/kubernetes/client/bin).*?)(["]*)$'
+      line: 'PATH=\1\2:/logiciels/kubernetes/client/bin\3'
+
+  - name: Installing rkt
+    become: true
+    apt:
+        deb: https://github.com/rkt/rkt/releases/download/v1.27.0/rkt_1.27.0-1_amd64.deb
+      

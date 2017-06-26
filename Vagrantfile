@@ -8,9 +8,16 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "master" do |master|
-#    master.vm.network "private_network", ip: "192.168.33.101"
+    master.vm.network "private_network", ip: "192.168.33.101"
     master.vm.provision "ansible" do |ansible|
       ansible.playbook = "master.playbook.yml"
+      #ansible.verbose = true
+    end
+  end
+  config.vm.define "node" do |master|
+#    master.vm.network "private_network", ip: "192.168.33.102"
+    master.vm.provision "ansible" do |ansible|
+      ansible.playbook = "node.playbook.yml"
       #ansible.verbose = true
     end
   end
