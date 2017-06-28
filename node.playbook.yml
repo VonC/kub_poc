@@ -1,23 +1,22 @@
 ---
 - hosts: node
   become_method: sudo
+  gather_facts: False
+
+  pre_tasks:
+    - raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      become: true
+    - setup:
+
   tasks:
   - name: Installing rkt
     become: true
     apt:
         deb: https://github.com/rkt/rkt/releases/download/v1.27.0/rkt_1.27.0-1_amd64.deb
         update_cache: yes
-  - name: Installing systemd
-    become: true
-    apt:
-        deb: systemd
   - name: Running rkt metadata services
     become: true
-    service:
-      enabled: yes
-      name: rkt
-      state: started
-      arguments: metadata-service
+    raw: systemd-run rkt metadata-service
   - name: Installing kubernetes binaries
     become: true
     unarchive:
