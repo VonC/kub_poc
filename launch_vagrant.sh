@@ -9,6 +9,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir ${DIR}/tmp
 cd ${DIR}/tmp
 
+wget https://github.com/rkt/rkt/releases/download/v1.27.0/rkt_1.27.0-1_amd64.deb
+
 # Problem with old version of vagrant and ubuntu xenial
 vagrant version | grep 1.9.5 > /dev/null
 if [ $? != 0 ]; then
@@ -22,9 +24,8 @@ fi
 wget -O get_kube.sh https://get.k8s.io/
 
 chmod 755 get_kube.sh
-
-./get_kube.sh
+#./get_kube.sh
 
 cd ${DIR}
 
-vagrant up
+vagrant provision
