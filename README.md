@@ -18,3 +18,4 @@ sudo systemd-run rkt api-service
 sudo systemd-run rkt metadata-service
 
 
+kubectl config set-cluster TEST --server=http://127.0.0.1
