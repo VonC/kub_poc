@@ -1,5 +1,5 @@
 ---
-- hosts: master
+- hosts: all
   become_method: sudo
   gather_facts: False
 
@@ -9,12 +9,8 @@
     - setup:
 
   roles:
-    - rkt
-    - kubernetes
-  
-
-  # - name: etcd
-  #   become: true
-  #   apt: 
-  #     name: etcd
-  #     update_cache: yes
+    # - rkt
+    # - kubernetes
+    # - etcd
+    # - kubernetes_master
+    - kubernetes_client

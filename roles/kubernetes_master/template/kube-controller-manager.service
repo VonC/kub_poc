@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes controller-manager
+Documentation=https://github.com/kubernetes/kubernetes/tree/master/docs
+
+[Service]
+Slice=machine.slice
+ExecStart=/kubernetes/server/bin/kube-controller-manager \
+  --master {{ master_ip }}:{{ master_port }}
+ExecStopPost=pkill -TERM -f "kube-controller-manager"
+KillMode=process
+Restart=always
+Wants=kube-apiserver

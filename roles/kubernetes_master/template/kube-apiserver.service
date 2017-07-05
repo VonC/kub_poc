@@ -1,0 +1,17 @@
+[Unit]
+Description=Kubernetes api-server
+Documentation=https://github.com/kubernetes/kubernetes/tree/master/docs
+
+[Service]
+Slice=machine.slice
+ExecStartPre=/bin/mkdir -p /var/log/kube-apiserver
+ExecStart=/kubernetes/server/bin/kube-apiserver \
+  --insecure-bind-address={{ master_ip }} \
+  --etcd-servers=http://localhost:2379 \
+  --service-cluster-ip-range=192.168.242.0/24 \
+  --insecure-port={{ master_port }} \
+  --token-auth-file=/dev/null \
+  --log-dir=/var/log/kube-apiserver
+ExecStopPost=pkill -TERM -f "kube-apiserver"
+KillMode=process
+Restart=always

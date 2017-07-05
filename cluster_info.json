@@ -1,0 +1,10 @@
+[
+   {
+    "name" : "master_1",
+    "ip" : "192.168.42.100",
+    "memory" : "2048",
+    "playbook" : "master.playbook.yml",
+    "master_ip" : "192.168.42.100",
+    "master_port" : "8080"
+   }
+]

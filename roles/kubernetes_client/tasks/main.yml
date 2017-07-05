@@ -1,0 +1,9 @@
+---
+- name: Creating cluster info
+  raw: "kubectl config set-cluster {{ master_name }} --server=http://{{ master_ip }}:{{ master_port }}"
+
+- name: Creating context
+  raw: "kubectl config set-context {{ master_name }} --cluster={{ master_name }}"
+
+- name: Setting context
+  raw: "kubectl config use-context {{ master_name }}"

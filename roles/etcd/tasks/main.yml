@@ -1,0 +1,34 @@
+---
+- name: Copying etcd binaries
+  become: true
+  unarchive:
+    src: tmp/etcd-v3.2.1-linux-amd64.tar.gz
+    dest: /tmp/
+
+- name: Copying etcd to /bin/
+  become: true
+  copy:
+    remote_src: true
+    src: /tmp/etcd-v3.2.1-linux-amd64/etcd
+    dest: /bin/etcd
+    mode: 0755
+
+- name: Copying etcdctl to /bin/
+  become: true
+  copy:
+    remote_src: true
+    src: /tmp/etcd-v3.2.1-linux-amd64/etcdctl
+    dest: /bin/etcdctl
+    mode: 0755
+
+- name: Copying etcd service file
+  become: true
+  template:
+    src: roles/etcd/template/etcd.service
+    dest: /etc/systemd/system/etcd.service
+
+- name: Launching etcd service
+  become: true
+  systemd:
+    name: etcd
+    state: started

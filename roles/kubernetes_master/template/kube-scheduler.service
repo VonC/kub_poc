@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes scheduler
+Documentation=https://github.com/kubernetes/kubernetes/tree/master/docs
+
+[Service]
+Slice=machine.slice
+ExecStart=/kubernetes/server/bin/kube-scheduler \
+  --master {{ master_ip }}:{{ master_port }}
+ExecStopPost=pkill -TERM -f "kube-scheduler"
+KillMode=process
+Restart=always
+Wants=kube-apiserver
