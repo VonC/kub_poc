@@ -9,8 +9,8 @@
     - setup:
 
   roles:
-    # - rkt
-    # - kubernetes
-    # - etcd
-    # - kubernetes_master
+    - rkt
+    - kubernetes
+    - etcd
+    - kubernetes_master
     - kubernetes_client
