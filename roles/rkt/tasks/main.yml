@@ -1,0 +1,35 @@
+---
+- name: copy
+  copy:
+    src: tmp/rkt_1.27.0-1_amd64.deb
+    dest: /tmp/rkt.deb
+
+- name: Installing rkt
+  become: true
+  apt:
+    deb: "/tmp/rkt.deb"
+
+- name: Creating rkt api service file
+  become: true
+  template:
+    src: roles/rkt/template/rkt-api.service
+    dest: /etc/systemd/system/rpt-api.service
+
+- name: Creating rkt metadata service file
+  become: true
+  template:
+    src: roles/rkt/template/rkt-metadata.service
+    dest: /etc/systemd/system/rpt-metadata.service
+
+- name: Launching rkt api service
+  become: true
+  systemd:
+    name: rkt-api
+    state: started
+
+- name: Launching rkt metadata service
+  become: true
+  systemd:
+    name: rkt-metadata
+    state: started
+    

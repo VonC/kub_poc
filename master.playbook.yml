@@ -8,40 +8,13 @@
       become: true
     - setup:
 
-  tasks:
-  - name: copy
-    copy:
-        src: tmp/rkt_1.27.0-1_amd64.deb
-        dest: /home/ubuntu/rkt.deb
-  - name: Installing rkt
-    become: true
-    apt:
-        deb: "rkt.deb"
-  - name: Running rkt metadata services
-    become: true
-    raw: systemd-run rkt metadata-service
-  - name: Installing kubernetes binaries
-    become: true
-    unarchive:
-      src: tmp/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
-      dest: /
-  - name: Settings folder rights
-    become: true
-    file:
-      path: /kubernetes
-      recurse: true
-      state: directory
-      mode: 0755
-  - name: add /kubernetes/server/bin to path
-    become: true
-    lineinfile:
-      dest: /etc/environment
-      state: present
-      backrefs: yes
-      regexp: 'PATH=(["]*)((?!.*?/kubernetes/server/bin).*?)(["]*)$'
-      line: 'PATH=\1\2:/kubernetes/server/bin\3'
-  - name: etcd
-    become: true
-    apt: 
-      name: etcd
-      update_cache: yes
+  roles:
+    - rkt
+    - kubernetes
+  
+
+  # - name: etcd
+  #   become: true
+  #   apt: 
+  #     name: etcd
+  #     update_cache: yes

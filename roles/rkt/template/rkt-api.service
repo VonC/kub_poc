@@ -1,0 +1,10 @@
+[Unit]
+Description=rkt api
+Documentation=https://github.com/rkt/rkt/blob/master/Documentation
+
+[Service]
+Slice=machine.slice
+ExecStart=/usr/bin/rkt api-service
+ExecStopPost=pkill -TERM -f "rkt api-service"
+KillMode=process
+Restart=always

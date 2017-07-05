@@ -1,0 +1,21 @@
+---
+- name: Installing kubernetes binaries
+  become: true
+  unarchive:
+    src: tmp/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
+    dest: /
+- name: Settings folder rights
+  become: true
+  file:
+    path: /kubernetes
+    recurse: true
+    state: directory
+    mode: 0755
+- name: add /kubernetes/server/bin to path
+  become: true
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    backrefs: yes
+    regexp: 'PATH=(["]*)((?!.*?/kubernetes/server/bin).*?)(["]*)$'
+    line: 'PATH=\1\2:/kubernetes/server/bin\3'
