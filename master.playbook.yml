@@ -14,3 +14,4 @@
     - etcd
     - kubernetes_master
     - kubernetes_client
+    - kubernetes_proxy

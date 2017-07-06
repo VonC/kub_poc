@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes kubelet
+Documentation=https://github.com/kubernetes/kubernetes/tree/master/docs
+
+[Service]
+Slice=machine.slice
+ExecStart=/kubernetes/server/bin/kubelet \
+  --api-servers=http://{{ master_ip }}:{{ master_port }} \
+  --container-runtime=rkt
+ExecStopPost=pkill -TERM -f "kubelet"
+KillMode=process
+Restart=always

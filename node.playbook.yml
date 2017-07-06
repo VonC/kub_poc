@@ -1,5 +1,5 @@
 ---
-- hosts: node
+- hosts: all
   become_method: sudo
   gather_facts: False
 
@@ -8,34 +8,9 @@
       become: true
     - setup:
 
-  tasks:
-  - name: Installing rkt
-    become: true
-    apt:
-        deb: https://github.com/rkt/rkt/releases/download/v1.27.0/rkt_1.27.0-1_amd64.deb
-        update_cache: yes
-  - name: Running rkt metadata services
-    become: true
-    raw: systemd-run rkt metadata-service
-  - name: Installing kubernetes binaries
-    become: true
-    unarchive:
-      src: tmp/kubernetes/server/kubernetes-server-linux-amd64.tar.gz
-      dest: /
-  - name: Settings folder rights
-    become: true
-    file:
-      path: /kubernetes
-      recurse: true
-      state: directory
-      mode: 0755
-  - name: add /kubernetes/server/bin to path
-    become: true
-    lineinfile:
-      dest: /etc/environment
-      state: present
-      backrefs: yes
-      regexp: 'PATH=(["]*)((?!.*?/kubernetes/server/bin).*?)(["]*)$'
-      line: 'PATH=\1\2:/kubernetes/server/bin\3'
-
-      
+  roles:
+    - rkt
+    - kubernetes
+    - kubernetes_node
+    - kubernetes_client
+    - kubernetes_proxy

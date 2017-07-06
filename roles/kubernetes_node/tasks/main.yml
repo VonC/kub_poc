@@ -1,0 +1,12 @@
+---
+- name: Creating kubelet file
+  become: true
+  template:
+    src: roles/kubernetes_node/template/kubelet.service
+    dest: /etc/systemd/system/kubelet.service
+
+- name: Launching kubelet
+  become: true
+  systemd:
+    name: kubelet
+    state: started

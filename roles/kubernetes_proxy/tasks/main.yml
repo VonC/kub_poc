@@ -1,0 +1,12 @@
+---
+- name: Creating kube-proxy file
+  become: true
+  template:
+    src: roles/kubernetes_proxy/template/kube-proxy.service
+    dest: /etc/systemd/system/kube-proxy.service
+
+- name: Launching kube-proxy
+  become: true
+  systemd:
+    name: kube-proxy
+    state: started

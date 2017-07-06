@@ -1,0 +1,12 @@
+[Unit]
+Description=Kubernetes proxy
+Documentation=https://github.com/kubernetes/kubernetes/tree/master/docs
+
+[Service]
+Slice=machine.slice
+ExecStart=/kubernetes/server/bin/kube-proxy \
+  --master {{ master_ip }}:{{ master_port }}
+ExecStopPost=pkill -TERM -f "kube-proxy"
+KillMode=process
+Restart=always
+Wants=kube-apiserver
