@@ -16,7 +16,8 @@ Vagrant.configure(2) do |config|
 
   settings.each do |cluster|
     config.vm.define cluster["name"] do |node|
-      node.vm.network "public_network", ip: cluster["ip"]
+      node.vm.hostname = cluster["name"]
+      node.vm.network "private_network", ip: cluster["ip"]
 
       node.vm.provider "virtualbox" do |vb|
         vb.memory = cluster["memory"]
