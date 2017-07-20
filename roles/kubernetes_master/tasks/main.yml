@@ -29,6 +29,12 @@
     src: roles/kubernetes_master/template/kube-scheduler.service
     dest: /etc/systemd/system/kube-scheduler.service
 
+- name: Creating kube-scheduler passwd
+  template:
+    src: roles/kubernetes_master/template/passwd
+    dest: /home/ubuntu/passwd
+    mode: 0666
+
 - name: Launching kube-scheduler
   become: true
   systemd:
